@@ -4,12 +4,19 @@
   "description": "fullstack app: angular, express, mongodb",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index",
+    "server": "nodemon index"
   },
   "keywords": [
     "express",
     "angular"
   ],
   "author": "andrey ryabtsev",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
