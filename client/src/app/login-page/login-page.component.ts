@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { MaterialService } from '../shared/classes/material.service';
 
 import { AuthService } from '../shared/services/auth.service';
 
@@ -28,9 +29,11 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe({
       next: (params: Params) => {
         if (params['registered']) {
-          // Теперь можете войти в систему
+          MaterialService.toast(`Now you're free to use the system`);
         } else if (params['accessDenied']) {
-          // Для начала авторизуйтесь в системе
+          MaterialService.toast('You should be authorized first');
+        } else if (params['sessionExpired']) {
+          MaterialService.toast('Session expired');
         }
       }
     })
@@ -47,7 +50,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.aSub = this.auth.login(this.form.value).subscribe({
       next: () => this.router.navigate(['/overview']),
       error: error => {
-        console.warn(error);
+        MaterialService.toast(error.error.message);
         this.form.enable();
       },
     });
