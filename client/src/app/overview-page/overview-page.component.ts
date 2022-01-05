@@ -9,7 +9,7 @@ export class OverviewPageComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
 }

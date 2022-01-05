@@ -40,7 +40,7 @@ export class AuthService {
     return !!this.token;
   }
 
-  logout(): void {
+  logout() {
     this.setToken(null);
     localStorage.clear();
   };
