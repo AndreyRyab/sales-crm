@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { of, switchMap } from 'rxjs';
@@ -11,7 +11,12 @@ import { CategoriesService } from 'src/app/shared/services/categories.service';
   styleUrls: ['./categories-form.component.css']
 })
 export class CategoriesFormComponent implements OnInit {
+
+  @ViewChild('input') inputRef!: ElementRef
+
   form!: FormGroup;
+  image!: File;
+  imagePreview: string | ArrayBuffer | null | undefined = '';
   isNew = true;
 
   constructor(private route: ActivatedRoute,
@@ -22,12 +27,8 @@ export class CategoriesFormComponent implements OnInit {
       name: new FormControl(null, Validators.required)
     })
 
-    /* this.route.params.subscribe((params: Params) => {
-      if (params['id']) {
-        // Editing the form
-        this.isNew = false;
-      }
-    }); */
+    this.form.disable();
+
     this.route.params
       .pipe(
         switchMap(
@@ -47,12 +48,30 @@ export class CategoriesFormComponent implements OnInit {
             this.form.patchValue({
               name: category.name,
             });
+            this.imagePreview = category.imageSrc;
             MaterialService.updateTextInputs();
           }
+          this.form.enable();
         },
         error: error => MaterialService.toast(error.error.message)
       })
 
+  };
+
+  triggerClick() {
+    this.inputRef.nativeElement.click();
+  };
+
+  onFileUpload(event: any) { // 'any' in order to use TS (it doesn't know .files)
+    const file = event.target.files[0];
+    this.image = file;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result;
+    };
+
+    reader.readAsDataURL(file);
   };
 
   onSubmit() {
