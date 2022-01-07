@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { of, switchMap } from 'rxjs';
 import { MaterialService } from 'src/app/shared/classes/material.service';
 import { CategoriesService } from 'src/app/shared/services/categories.service';
@@ -18,9 +18,11 @@ export class CategoriesFormComponent implements OnInit {
   image!: File;
   imagePreview: string | ArrayBuffer | null | undefined = '';
   isNew = true;
+  category: any;
 
   constructor(private route: ActivatedRoute,
-              private categoriesService: CategoriesService) { };
+              private categoriesService: CategoriesService,
+              private router: Router) { };
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -45,6 +47,7 @@ export class CategoriesFormComponent implements OnInit {
       .subscribe({
         next: category => {
           if (category) {
+            this.category = category;
             this.form.patchValue({
               name: category.name,
             });
@@ -62,6 +65,24 @@ export class CategoriesFormComponent implements OnInit {
     this.inputRef.nativeElement.click();
   };
 
+  deleteCategory(){
+    const decision = window.confirm(`${this.category.name} category seems to be deleted. Are you shure?`);
+    if(decision) {
+      this.categoriesService.delete(this.category._id)
+        .subscribe({
+          next: (response) => {
+            MaterialService.toast(response.message);
+          },
+          error: error => {
+            MaterialService.toast(error.error.message);
+          },
+          complete: () => {
+            this.router.navigate(['/categories']);
+          },
+        })
+    }
+  };
+
   onFileUpload(event: any) { // 'any' in order to use TS (it doesn't know .files)
     const file = event.target.files[0];
     this.image = file;
@@ -75,7 +96,23 @@ export class CategoriesFormComponent implements OnInit {
   };
 
   onSubmit() {
+    let obs$
+    this.form.disable();
+    if (this.isNew) {
+      obs$ = this.categoriesService.create(this.form.value.name, this.image);
+    } obs$ = this.categoriesService.update(this.category._id, this.form.value.name, this.image)
 
+    obs$.subscribe({
+      next: category => {
+        this.category = category;
+        this.form.enable();
+        MaterialService.toast('Data has been changed')
+      },
+      error: error => {
+        MaterialService.toast(error.error.message);
+        this.form.enable();
+      }
+    });
   };
 
 }
