@@ -2,7 +2,7 @@
   <div class="col s12">
     <div class="page-subtitle">
       <h4>Positions:</h4>
-      <button class="waves-effect waves-light btn grey darken-1 btn-small modal-trigger" data-target="create-modal">
+      <button class="waves-effect waves-light btn grey darken-1 btn-small" (click)="onAddPosition()">
           Add new position
       </button>
     </div>
@@ -12,6 +12,7 @@
         <a
           *ngFor="let position of positions"
           class="collection-item collection-item-icon"
+          (click)="onSelectPosition(position)"
         >
           <span>
             {{position.name}} <strong>{{position.cost}}</strong>
