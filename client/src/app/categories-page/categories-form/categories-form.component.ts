@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { of, switchMap } from 'rxjs';
 import { MaterialService } from 'src/app/shared/classes/material.service';
+import { Position } from 'src/app/shared/interfaces';
 import { CategoriesService } from 'src/app/shared/services/categories.service';
 
 @Component({
@@ -116,5 +117,4 @@ export class CategoriesFormComponent implements OnInit {
       }
     });
   };
-
 }
