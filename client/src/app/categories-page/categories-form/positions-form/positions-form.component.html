@@ -18,7 +18,7 @@
             {{position.name}} <strong>{{position.cost}}</strong>
           </span>
           <span>
-            <i class="material-icons">delete</i>
+            <i class="material-icons" (click)="onDeletePosition($event, position)">delete</i>
           </span>
         </a>
       </div>
@@ -64,7 +64,7 @@
             *ngIf="form.get('cost')?.invalid && form.get('cost')?.touched"
             class="helper-text red-text"
           >
-            Fill the price greater than 1
+            The price must be greater than 1
           </span>
         </div>
     </div>
@@ -80,6 +80,7 @@
       <button
         type="submit"
         class="modal-action btn waves-effect"
+        [disabled]="form.invalid || form.disabled"
       >
         Save
       </button>
