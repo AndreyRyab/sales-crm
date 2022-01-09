@@ -66,7 +66,7 @@ export class CategoriesFormComponent implements OnInit {
   };
 
   deleteCategory(){
-    const decision = window.confirm(`${this.category.name} category seems to be deleted. Are you shure?`);
+    const decision = window.confirm(`${this.category.name} Category seems to be deleted. Are you shure?`);
     if(decision) {
       this.categoriesService.delete(this.category._id)
         .subscribe({
@@ -100,7 +100,9 @@ export class CategoriesFormComponent implements OnInit {
     this.form.disable();
     if (this.isNew) {
       obs$ = this.categoriesService.create(this.form.value.name, this.image);
-    } obs$ = this.categoriesService.update(this.category._id, this.form.value.name, this.image)
+    } else {
+      obs$ = this.categoriesService.update(this.category._id, this.form.value.name, this.image);
+    };
 
     obs$.subscribe({
       next: category => {

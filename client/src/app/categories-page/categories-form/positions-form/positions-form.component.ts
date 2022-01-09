@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Position } from 'src/app/shared/interfaces';
 import { PositionsService } from 'src/app/shared/services/positions.service';
 
@@ -9,6 +9,7 @@ import { PositionsService } from 'src/app/shared/services/positions.service';
 })
 export class PositionsFormComponent implements OnInit {
   @Input('categoryId') categoryId!: string
+  @ViewChild('modal') modalRef!: ElementRef
 
   positions: Position[] = [];
   loading = false;
