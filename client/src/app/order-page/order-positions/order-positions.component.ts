@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable, switchMap, map } from 'rxjs';
+import { MaterialService } from 'src/app/shared/classes/material.service';
 import { Position } from 'src/app/shared/interfaces';
 import { PositionsService } from 'src/app/shared/services/positions.service';
 import { OrderService } from '../order.service';
@@ -36,6 +37,7 @@ export class OrderPositionsComponent implements OnInit {
   };
 
   addToOrder(position: Position) {
+    MaterialService.toast(`${position.quantity} items added`)
     this.order.add(position);
   }
 
