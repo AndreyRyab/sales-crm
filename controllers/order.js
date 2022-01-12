@@ -45,12 +45,12 @@ module.exports.create = async function (req, res) {
       user: req.user.id,
     }).sort({ date: -1 });
 
-    const maxOrder = lastOrder ? lastOrder.order : 0;
+    let maxOrder = lastOrder ? lastOrder.order : 0;
 
     const order = await new Order({
       list: req.body.list,
       user: req.user.id,
-      order: maxOrder++,
+      order: ++maxOrder,
     }).save();
     res.status(201).json(order);
   } catch (error) {
