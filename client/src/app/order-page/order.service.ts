@@ -31,7 +31,8 @@ export class OrderService {
   };
 
   clear() {
-
+    this.list = [];
+    this.totalPrice = 0;
   };
 
   private computeTotal() {
