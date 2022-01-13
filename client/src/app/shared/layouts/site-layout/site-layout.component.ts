@@ -11,8 +11,7 @@ import { AuthService } from '../../services/auth.service';
 
 export class SiteLayoutComponent implements AfterViewInit {
 
-  @ViewChild('floating')
-  floatingRef!: ElementRef;
+  @ViewChild('floating') floatingRef!: ElementRef;
 
   links = [
     { url: '/overview', name: 'Обзор' },
@@ -26,6 +25,8 @@ export class SiteLayoutComponent implements AfterViewInit {
               private router: Router ) {};
 
   ngAfterViewInit() {
+    console.log(this.floatingRef);
+
     MaterialService.initializeFloatingButton(this.floatingRef);
   };
 
