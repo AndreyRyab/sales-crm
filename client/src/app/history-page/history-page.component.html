@@ -4,7 +4,8 @@
     (click)="isFilterVisible = !isFilterVisible"
     class="btn btn-small"
     [ngClass]="{
-      'active': isFilterVisible
+      'active': isFilterVisible,
+      'red': isFiltered()
     }"
     data-position="left"
     data-tooltip="Open filter"

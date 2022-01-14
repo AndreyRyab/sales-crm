@@ -72,7 +72,11 @@ export class HistoryPageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.offset = 0;
     this.filter = filter;
     this.reloading = true;
-    this.fetch()
+    this.fetch();
+  };
+
+  isFiltered(): boolean {
+    return Object.keys(this.filter).length !== 0;
   };
 
   ngAfterViewInit() {
