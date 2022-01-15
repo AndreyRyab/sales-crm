@@ -4,7 +4,8 @@ const errorHandler = require('../utils/errorHandler')
 
 module.exports.overview = async function (req, res) {
   try {
-    const allOrders = await Order.find({ user: req.user.id }).sort(1);
+    const allOrders = await Order.find({ user: req.user.id }).sort({ data: 1});
+    
     const ordersMap = getOrdersMap(allOrders);
 
     const previousDayOrders = ordersMap[moment().add(-1, 'd').format('DD.MM.YYYY')] || [];
@@ -25,7 +26,7 @@ module.exports.overview = async function (req, res) {
 
     const previousDayRevenue = calculateTotalRevenue(previousDayOrders);
 
-    const revenuePercentage = (((previousDayRevenue / dailyRevenue) -1) * 100).toFixed(2);
+    const revenuePercentage = (((previousDayRevenue / dailyRevenue) - 1) * 100).toFixed(2);
 
     const compareRevenue = (previousDayRevenue - dailyRevenue).toFixed(2);
 
