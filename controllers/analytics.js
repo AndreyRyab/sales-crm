@@ -18,9 +18,9 @@ module.exports.overview = async function (req, res) {
 
     const ordersPerDay = (totalOrdersNumber / daysNumber).toFixed(0);
 
-    const ordersPercentage = (((previousDayOrderQuantity / ordersPerDay) -1) * 100).toFixed(2);
+    const ordersPercentage = (((previousDayOrderQuantity / ordersPerDay) - 1) * 100).toFixed(2);
     
-    const totalRevenue = calculateTotalRevenue();
+    const totalRevenue = calculateTotalRevenue(allOrders);
 
     const dailyRevenue = totalRevenue / daysNumber;
 
@@ -52,8 +52,31 @@ module.exports.overview = async function (req, res) {
   }
 };
 
-module.exports.analytics = function (req, res) {
+module.exports.analytics = async function (req, res) {
+  try {
+    const allOrders = await Order.find({ user: req.user.id }).sort({ data: 1 });
+    const ordersMap = getOrdersMap(allOrders);
+    const avarage = +(calculateTotalRevenue(allOrders) / Object.keys(ordersMap).length.toFixed(2));
 
+    const chart = Object.keys(ordersMap).map(label => {
+      const revenue = calculateTotalRevenue(ordersMap[label]);
+      const orders = ordersMap[label].length;
+
+      return {
+        label,
+        revenue,
+        orders,
+      }
+    })
+
+    res.status(200).json({
+      avarage,
+      chart,
+    });
+
+  } catch (error) {
+    errorHandler(res, error);
+  }
 };
 
 function getOrdersMap(orders = []) {

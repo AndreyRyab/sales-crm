@@ -55,3 +55,14 @@ export interface OverviewPageItem {
   prevDay: number;
   isHigher: boolean;
 };
+
+export interface AnalyticsPage {
+  avarage: number;
+  chart: AnalyticsChartItem[];
+}
+
+export interface AnalyticsChartItem {
+  revenue: number;
+  orders: number;
+  label: string;
+}

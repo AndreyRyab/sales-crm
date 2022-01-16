@@ -25,8 +25,6 @@ export class SiteLayoutComponent implements AfterViewInit {
               private router: Router ) {};
 
   ngAfterViewInit() {
-    console.log(this.floatingRef);
-
     MaterialService.initializeFloatingButton(this.floatingRef);
   };
 
