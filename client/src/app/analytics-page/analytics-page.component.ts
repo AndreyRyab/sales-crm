@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Chart } from 'chart.js';
+import Chart from 'chart.js/auto';
 
 import { MaterialService } from '../shared/classes/material.service';
 import { AnalyticsPage } from '../shared/interfaces';
@@ -34,13 +34,10 @@ export class AnalyticsPageComponent implements AfterViewInit, OnDestroy {
 
     this.aSub = this.service.getAnalytics().subscribe({
       next: (data: AnalyticsPage) => {
-        console.log(data);
-
         this.avarage = data.avarage;
 
         revenueConfig.labels = data.chart.map(item => item.label);
         revenueConfig.data = data.chart.map(item => item.revenue);
-
 
         const revenueContext = this.revenueRef.nativeElement.getContext('2d');
         revenueContext.canvas.height = '300px';
