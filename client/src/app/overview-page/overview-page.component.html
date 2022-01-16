@@ -1,1 +1,74 @@
-<p>overview-page works!</p>
+<div class="page-title">
+  <h4>
+      Yesterday's overview ({{ yesterday | date: 'dd.MM.yyyy' }})
+      <i class="material-icons black-text pointer" (click)="openInfo()">info_outline</i>
+  </h4>
+</div>
+
+<div
+  *ngIf="data$ | async as data$; else loader"
+  class="row"
+>
+  <div class="col s12 l6">
+    <div class="card light-blue lighten-2 white-text">
+        <div class="card-content">
+            <span class="card-title">Revenue:</span>
+            <h3>{{ data$.revenue.prevDay }}</h3>
+            <h3
+              class="m0 mb1"
+              [ngClass]="{
+                'green-text text-darken-2': data$.revenue.isHigher,
+                'red-text': !data$.revenue.isHigher
+              }"
+            >
+              <i class="material-icons">
+                {{ data$.revenue.isHigher ? 'arrow_upward' : 'arrow_downward' }}
+              </i>
+              {{ data$.revenue.percentage }}%
+            </h3>
+            <p>
+              Yesterday's revenue is {{ data$.revenue.percentage }}%
+              {{ data$.revenue.isHigher ? 'higher' : 'lower' }}
+              than avarage: {{ data$.revenue.compare }}
+            </p>
+        </div>
+      </div>
+  </div>
+
+  <div class="col s12 l6">
+    <div class="card orange lighten-2 white-text">
+        <div class="card-content">
+          <span class="card-title">Заказы:</span>
+          <h3>{{ data$.orders.prevDay }}</h3>
+          <h3
+            class="m0 mb1"
+            [ngClass]="{
+              'green-text text-darken-2': data$.orders.isHigher,
+              'red-text': !data$.orders.isHigher
+            }"
+          >
+            <i class="material-icons">
+              {{ data$.orders.isHigher ? 'arrow_upward' : 'arrow_downward' }}
+            </i>
+            {{ data$.orders.percentage }}%
+          </h3>
+          <p>
+            Yesterday's orders quantity is {{ data$.orders.percentage }}%
+              {{ data$.orders.isHigher ? 'higher' : 'lower' }}
+              than avarage: {{ data$.orders.compare }}
+          </p>
+        </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loader>
+  <app-loader></app-loader>
+</ng-template>
+
+<div class="tap-target" data-target="menu" #tapTarget>
+  <div class="tap-target-content">
+    <h5>What is this page for?</h5>
+    <p>It shows sales dynamic for previous day. Comparing with avarage amount will help you to check how is your bussiness running.</p>
+  </div>
+</div>
