@@ -1,6 +1,3 @@
-module.exports = {
-  mongoURI:
-    'mongodb+srv://ryab:Leningrad10021981@cluster0.m85kd.mongodb.net/sales_crm?retryWrites=true&w=majority',
-  saltValue: 10,
-  jwt: 'dev-jwt',
-};
+if (process.env.NODE_ENV === 'production') {
+  module.exports = require('./keys.prod');
+} module.exports = require('./keys.dev');
